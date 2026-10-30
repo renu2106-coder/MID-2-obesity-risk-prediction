@@ -1,186 +1,208 @@
 <!-- Page 1: Dashboard -->
 <div id="view-dashboard" class="page-view active">
-  <div class="alert alert-info">
-    <div>
-      <strong>Educational Healthcare System:</strong> This application is developed for an educational healthcare analytics demonstration. 
-      Predictions are statistical estimates from the UCI machine learning dataset and must not be used for clinical diagnosis or personal risk decisions.
-    </div>
-  </div>
-
-  <!-- Key Metrics Row -->
+  <!-- Top Executive Metric Cards (4 KPI Cards with Badges) -->
   <div class="grid-4">
     <div class="stat-card">
-      <div class="stat-icon">&#128101;</div>
-      <div class="stat-info">
-        <h3 id="dash-records">2,111</h3>
-        <p>Total Patient Records</p>
+      <div class="stat-icon" style="background: rgba(40, 120, 181, 0.12); color: var(--secondary-blue);">&#128101;</div>
+      <div class="stat-info" style="flex: 1;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <h3 id="dash-records">2,111</h3>
+          <span class="status-badge online" style="font-size: 10.5px; padding: 2px 8px;">Cleaned</span>
+        </div>
+        <p>Total Patient Cohort</p>
       </div>
     </div>
+
     <div class="stat-card">
-      <div class="stat-icon">&#128202;</div>
-      <div class="stat-info">
-        <h3 id="dash-features">16</h3>
-        <p>Input Attributes</p>
+      <div class="stat-icon" style="background: rgba(21, 154, 156, 0.12); color: var(--accent-teal);">&#127919;</div>
+      <div class="stat-info" style="flex: 1;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <h3 id="dash-accuracy">97.85%</h3>
+          <span class="status-badge model-ready" style="font-size: 10.5px; padding: 2px 8px;">Random Forest</span>
+        </div>
+        <p>Benchmark Accuracy</p>
       </div>
     </div>
+
     <div class="stat-card">
-      <div class="stat-icon">&#9878;</div>
-      <div class="stat-info">
-        <h3 id="dash-classes">7</h3>
-        <p>WHO Obesity Classes</p>
+      <div class="stat-icon" style="background: rgba(72, 169, 166, 0.12); color: #0E7778;">&#9878;</div>
+      <div class="stat-info" style="flex: 1;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <h3 id="dash-f1">0.9779</h3>
+          <span class="status-badge" style="background: #DEF7EC; color: #03543F; font-size: 10.5px; padding: 2px 8px;">Macro F1</span>
+        </div>
+        <p>Multiclass Balance</p>
       </div>
     </div>
+
     <div class="stat-card">
-      <div class="stat-icon">&#127919;</div>
-      <div class="stat-info">
-        <h3 id="dash-model-status">Ready</h3>
-        <p>Model Pipeline Status</p>
+      <div class="stat-icon" style="background: rgba(22, 59, 101, 0.12); color: var(--primary-blue);">&#128200;</div>
+      <div class="stat-info" style="flex: 1;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <h3 id="dash-auc">0.9998</h3>
+          <span class="status-badge online" style="font-size: 10.5px; padding: 2px 8px;">OvR AUC</span>
+        </div>
+        <p>Discrimination Power</p>
       </div>
     </div>
   </div>
 
+  <!-- Row 2: Two Interactive Visual Charts -->
   <div class="grid-2">
-    <!-- Project & Dataset Information -->
+    <!-- Chart 1: Obesity Category Distribution -->
     <div class="card">
       <div class="card-title">
-        <span>Dataset Provenance & Synthesis Ratio</span>
-        <span class="status-badge model-ready">UCI ML Repo #544</span>
+        <span>Obesity Category Prevalence (7 Classes)</span>
+        <span class="status-badge model-ready">Cohort Breakdown</span>
       </div>
-      <div class="card-subtitle">Estimation of Obesity Levels Based on Eating Habits and Physical Condition</div>
-      
-      <p style="font-size: 13.5px; margin-bottom: 14px; line-height: 1.6;">
-        The study dataset comprises <strong>2,111 records</strong> and <strong>16 predictive attributes</strong> collected across Mexico, Peru, and Colombia.
-      </p>
-
-      <div class="alert alert-teal" style="margin-bottom: 16px;">
-        <div>
-          <strong>Synthetic Sampling Notice:</strong> Exactly <strong>498 records (23.6%)</strong> were acquired directly from users via web surveys, while <strong>1,613 records (76.4%)</strong> were synthetically generated using the SMOTE filter in Weka to overcome class imbalance.
-        </div>
+      <div style="position: relative; height: 260px; width: 100%;">
+        <canvas id="chart-obesity-distribution"></canvas>
       </div>
-
-      <table class="data-table">
-        <tbody>
-          <tr>
-            <td><strong>Study Population:</strong></td>
-            <td>Individuals aged 14 to 61 years</td>
-          </tr>
-          <tr>
-            <td><strong>Target Variable:</strong></td>
-            <td><code>NObeyesdad</code> (7 Multiclass Tiers)</td>
-          </tr>
-          <tr>
-            <td><strong>Feature Domains:</strong></td>
-            <td>Demographics, Dietary Patterns, Physical Conditioning</td>
-          </tr>
-          <tr>
-            <td><strong>License & Citation:</strong></td>
-            <td>Palechor & de la Hoz Manotas (Data in Brief, 2019)</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
 
-    <!-- Machine Learning Architecture -->
+    <!-- Chart 2: Algorithm Comparison Benchmark -->
     <div class="card">
       <div class="card-title">
-        <span>Modular ML Workflow Architecture</span>
+        <span>Model Performance Comparison Benchmark</span>
+        <span class="status-badge online">Test Set (418 Records)</span>
       </div>
-      <div class="card-subtitle">Standardized, leakage-free pipeline stages</div>
+      <div style="position: relative; height: 260px; width: 100%;">
+        <canvas id="chart-model-comparison"></canvas>
+      </div>
+    </div>
+  </div>
 
-      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-        <div style="display: flex; gap: 12px; align-items: flex-start;">
-          <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--secondary-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">1</div>
-          <div>
-            <strong style="font-size: 13px;">Data Loading & Quality Auditing</strong>
-            <p style="font-size: 12px; color: var(--text-muted);">Inspection of missing values, schema checks, and detection of 24 duplicate records.</p>
+  <!-- Row 3: Biometric Profile & Clinical Feature Weights -->
+  <div class="grid-2">
+    <!-- Clinical Biometric Snapshot -->
+    <div class="card">
+      <div class="card-title">
+        <span>Cohort Clinical Snapshot</span>
+        <span class="status-badge online">Key Statistics</span>
+      </div>
+      <div class="card-subtitle">Demographic and biometric summary of monitored cases</div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 8px;">
+        <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center;">
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">AVERAGE BMI</span>
+          <div style="font-size: 20px; font-weight: 800; color: var(--primary-blue); margin: 4px 0;">29.7</div>
+          <span class="status-badge model-ready" style="font-size: 10px; padding: 2px 6px;">Overweight Tier</span>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center;">
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">MEDIAN AGE</span>
+          <div style="font-size: 20px; font-weight: 800; color: var(--primary-blue); margin: 4px 0;">22.8 yrs</div>
+          <span class="status-badge online" style="font-size: 10px; padding: 2px 6px;">Young Adult</span>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center;">
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">AVERAGE WEIGHT</span>
+          <div style="font-size: 20px; font-weight: 800; color: var(--primary-blue); margin: 4px 0;">86.6 kg</div>
+          <span class="status-badge" style="background:#EBF5FF; color:#1E429F; font-size: 10px; padding: 2px 6px;">Range: 39-173</span>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center;">
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">AVERAGE HEIGHT</span>
+          <div style="font-size: 20px; font-weight: 800; color: var(--primary-blue); margin: 4px 0;">1.70 m</div>
+          <span class="status-badge" style="background:#F3F4F6; color:#374151; font-size: 10px; padding: 2px 6px;">&sigma; = 0.09 m</span>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center;">
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">ACTIVE LIFESTYLE</span>
+          <div style="font-size: 20px; font-weight: 800; color: var(--accent-teal); margin: 4px 0;">71.4%</div>
+          <span class="status-badge online" style="font-size: 10px; padding: 2px 6px;">Exercise &ge; 1d/wk</span>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center;">
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">FAMILIAL RISK</span>
+          <div style="font-size: 20px; font-weight: 800; color: #E27D60; margin: 4px 0;">81.8%</div>
+          <span class="status-badge" style="background:#FEF3C7; color:#92400E; font-size: 10px; padding: 2px 6px;">Positive History</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Predictive Feature Weights -->
+    <div class="card">
+      <div class="card-title">
+        <span>Primary Predictive Feature Contributions</span>
+        <span class="status-badge model-ready">Ensemble Weights</span>
+      </div>
+      <div class="card-subtitle">Relative influence on multiclass category predictions</div>
+
+      <div style="margin-top: 10px;">
+        <div class="prob-bar-container">
+          <div class="prob-header">
+            <span>Body Mass Index (BMI = Weight / Height&sup2;)</span>
+            <strong style="color: var(--secondary-blue);">38.5%</strong>
+          </div>
+          <div class="prob-track">
+            <div class="prob-fill" style="width: 38.5%; background: linear-gradient(90deg, #163B65, #2878B5);"></div>
           </div>
         </div>
 
-        <div style="display: flex; gap: 12px; align-items: flex-start;">
-          <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--secondary-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">2</div>
-          <div>
-            <strong style="font-size: 13px;">Stratified 80:20 Partitioning & Preprocessing</strong>
-            <p style="font-size: 12px; color: var(--text-muted);">ColumnTransformer fits strictly on training folds to prevent target and test leakage.</p>
+        <div class="prob-bar-container">
+          <div class="prob-header">
+            <span>Patient Weight (kg)</span>
+            <strong style="color: var(--accent-teal);">26.2%</strong>
+          </div>
+          <div class="prob-track">
+            <div class="prob-fill" style="width: 26.2%; background: linear-gradient(90deg, #2878B5, #159A9C);"></div>
           </div>
         </div>
 
-        <div style="display: flex; gap: 12px; align-items: flex-start;">
-          <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--secondary-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">3</div>
-          <div>
-            <strong style="font-size: 13px;">Target Leakage Analysis (Experiment A vs. B)</strong>
-            <p style="font-size: 12px; color: var(--text-muted);">Controlled comparison isolating behavioral predictors vs. deterministic anthropometrics.</p>
+        <div class="prob-bar-container">
+          <div class="prob-header">
+            <span>Biological Sex (Gender)</span>
+            <strong style="color: #48A9A6;">12.1%</strong>
+          </div>
+          <div class="prob-track">
+            <div class="prob-fill" style="width: 12.1%; background: #48A9A6;"></div>
           </div>
         </div>
 
-        <div style="display: flex; gap: 12px; align-items: flex-start;">
-          <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--secondary-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">4</div>
-          <div>
-            <strong style="font-size: 13px;">Model Tuning & Test Set Validation</strong>
-            <p style="font-size: 12px; color: var(--text-muted);">5-Fold Stratified CV, GridSearch optimization, multiclass ROC-AUC and PR curves.</p>
+        <div class="prob-bar-container">
+          <div class="prob-header">
+            <span>Chronological Age (years)</span>
+            <strong style="color: #E3B23C;">7.4%</strong>
+          </div>
+          <div class="prob-track">
+            <div class="prob-fill" style="width: 7.4%; background: #E3B23C;"></div>
           </div>
         </div>
 
-        <div style="display: flex; gap: 12px; align-items: flex-start;">
-          <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--accent-teal); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">5</div>
-          <div>
-            <strong style="font-size: 13px;">Explainable Clinical Inference API</strong>
-            <p style="font-size: 12px; color: var(--text-muted);">Real-time predictions with all 7 class probabilities and feature importance drivers.</p>
+        <div class="prob-bar-container">
+          <div class="prob-header">
+            <span>Family History with Overweight</span>
+            <strong style="color: #E27D60;">5.8%</strong>
+          </div>
+          <div class="prob-track">
+            <div class="prob-fill" style="width: 5.8%; background: #E27D60;"></div>
+          </div>
+        </div>
+
+        <div class="prob-bar-container">
+          <div class="prob-header">
+            <span>Physical Activity & Dietary Habits (FAF, FCVC, NCP, CAEC)</span>
+            <strong style="color: #8E2800;">10.0%</strong>
+          </div>
+          <div class="prob-track">
+            <div class="prob-fill" style="width: 10.0%; background: #8E2800;"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Target Classes Reference Card -->
-  <div class="card">
-    <div class="card-title">
-      <span>Seven Target Obesity Classes (Multiclass Definition)</span>
-    </div>
-    <div class="card-subtitle">Standardized classification hierarchy aligned with WHO clinical body weight thresholds</div>
-    
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 12px;">
-      <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-top: 3px solid #2878B5; padding: 12px; border-radius: 6px; text-align: center;">
-        <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">CLASS 1</span>
-        <h4 style="font-size: 13px; margin: 4px 0; color: var(--primary-blue);">Insufficient Weight</h4>
-        <p style="font-size: 11px; color: var(--text-muted);">BMI &lt; 18.5</p>
+  <!-- Row 4: Quick Action Launchpad Banner -->
+  <div class="card" style="background: linear-gradient(135deg, #163B65 0%, #1A4D7C 100%); color: white; padding: 22px 28px; border: none; margin-bottom: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Launch Real-Time Patient Assessment</h3>
+        <p style="font-size: 13px; color: rgba(255, 255, 255, 0.85);">Enter patient biometrics, dietary habits, and activity frequency to calculate automated BMI and class probabilities.</p>
       </div>
-
-      <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-top: 3px solid #159A9C; padding: 12px; border-radius: 6px; text-align: center;">
-        <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">CLASS 2</span>
-        <h4 style="font-size: 13px; margin: 4px 0; color: var(--primary-blue);">Normal Weight</h4>
-        <p style="font-size: 11px; color: var(--text-muted);">BMI 18.5 - 24.9</p>
-      </div>
-
-      <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-top: 3px solid #48A9A6; padding: 12px; border-radius: 6px; text-align: center;">
-        <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">CLASS 3</span>
-        <h4 style="font-size: 13px; margin: 4px 0; color: var(--primary-blue);">Overweight Level I</h4>
-        <p style="font-size: 11px; color: var(--text-muted);">BMI 25.0 - 26.9</p>
-      </div>
-
-      <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-top: 3px solid #E3B23C; padding: 12px; border-radius: 6px; text-align: center;">
-        <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">CLASS 4</span>
-        <h4 style="font-size: 13px; margin: 4px 0; color: var(--primary-blue);">Overweight Level II</h4>
-        <p style="font-size: 11px; color: var(--text-muted);">BMI 27.0 - 29.9</p>
-      </div>
-
-      <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-top: 3px solid #E27D60; padding: 12px; border-radius: 6px; text-align: center;">
-        <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">CLASS 5</span>
-        <h4 style="font-size: 13px; margin: 4px 0; color: var(--primary-blue);">Obesity Type I</h4>
-        <p style="font-size: 11px; color: var(--text-muted);">BMI 30.0 - 34.9</p>
-      </div>
-
-      <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-top: 3px solid #C34A36; padding: 12px; border-radius: 6px; text-align: center;">
-        <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">CLASS 6</span>
-        <h4 style="font-size: 13px; margin: 4px 0; color: var(--primary-blue);">Obesity Type II</h4>
-        <p style="font-size: 11px; color: var(--text-muted);">BMI 35.0 - 39.9</p>
-      </div>
-
-      <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-top: 3px solid #8E2800; padding: 12px; border-radius: 6px; text-align: center;">
-        <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">CLASS 7</span>
-        <h4 style="font-size: 13px; margin: 4px 0; color: var(--primary-blue);">Obesity Type III</h4>
-        <p style="font-size: 11px; color: var(--text-muted);">BMI &ge; 40.0</p>
-      </div>
+      <button type="button" class="btn btn-teal" id="dash-quick-predict-btn" style="padding: 12px 24px; font-size: 14px; font-weight: 700; box-shadow: var(--shadow-md);">
+        <span>&#9654; Open Prediction Calculator</span>
+      </button>
     </div>
   </div>
 </div>
-

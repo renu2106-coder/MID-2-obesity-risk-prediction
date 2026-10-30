@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFormSubmission();
   initDatasetUpload();
   initTrainingTrigger();
+  initDashboardQuickActions();
 
   // Load initial data from APIs
   loadDatasetSummary();
@@ -18,6 +19,22 @@ document.addEventListener('DOMContentLoaded', () => {
   loadEDAData();
   loadModelMetrics();
 });
+
+// Cache for dashboard charts
+let cachedDatasetSummary = null;
+let cachedModelMetrics = null;
+let obesityDistChart = null;
+let modelCompChart = null;
+
+function initDashboardQuickActions() {
+  const quickBtn = document.getElementById('dash-quick-predict-btn');
+  if (quickBtn) {
+    quickBtn.addEventListener('click', () => {
+      const predNav = document.querySelector('.sidebar-nav [data-view="prediction"]');
+      if (predNav) predNav.click();
+    });
+  }
+}
 
 // ==========================================================================
 // 1. Navigation & View Switching
@@ -78,14 +95,14 @@ async function loadDatasetSummary() {
     if (!json.success) return;
 
     const data = json.data;
+    cachedDatasetSummary = data;
 
     // Dashboard stats
     const dashRecords = document.getElementById('dash-records');
-    const dashFeatures = document.getElementById('dash-features');
-    const dashClasses = document.getElementById('dash-classes');
     if (dashRecords) dashRecords.textContent = data.total_records.toLocaleString();
-    if (dashFeatures) dashFeatures.textContent = data.total_features;
-    if (dashClasses) dashClasses.textContent = data.target_classes_count;
+
+    // Trigger dashboard visual charts
+    renderDashboardCharts(cachedDatasetSummary, cachedModelMetrics);
 
     // Explorer stats
     const expRecords = document.getElementById('explorer-records');
@@ -322,6 +339,7 @@ async function loadModelMetrics() {
     if (!json.success) return;
 
     const data = json.data;
+    cachedModelMetrics = data;
 
     // Top pill
     const topPill = document.getElementById('top-model-pill');
@@ -329,6 +347,11 @@ async function loadModelMetrics() {
       const bestAcc = data.random_forest ? (data.random_forest.accuracy * 100).toFixed(1) : '97.9';
       topPill.innerHTML = `<span>Model: ${data.selected_model} (${bestAcc}%)</span>`;
     }
+
+    // Dashboard KPI cards
+    const dashAcc = document.getElementById('dash-accuracy');
+    const dashF1 = document.getElementById('dash-f1');
+    const dashAuc = document.getElementById('dash-auc');
 
     // Evaluation stat cards
     const testAcc = document.getElementById('eval-test-acc');
@@ -338,11 +361,18 @@ async function loadModelMetrics() {
 
     const rf = data.random_forest;
     if (rf) {
+      if (dashAcc) dashAcc.textContent = `${(rf.accuracy * 100).toFixed(2)}%`;
+      if (dashF1) dashF1.textContent = rf.f1_macro.toFixed(4);
+      if (dashAuc) dashAuc.textContent = typeof rf.roc_auc_macro === 'number' ? rf.roc_auc_macro.toFixed(4) : rf.roc_auc_macro;
+
       if (testAcc) testAcc.textContent = `${(rf.accuracy * 100).toFixed(2)}%`;
       if (macroF1) macroF1.textContent = rf.f1_macro.toFixed(4);
       if (macroRec) macroRec.textContent = rf.recall_macro.toFixed(4);
       if (rocAuc) rocAuc.textContent = typeof rf.roc_auc_macro === 'number' ? rf.roc_auc_macro.toFixed(4) : rf.roc_auc_macro;
     }
+
+    // Trigger dashboard visual charts
+    renderDashboardCharts(cachedDatasetSummary, cachedModelMetrics);
 
     // Comparison table
     const compTbody = document.getElementById('comparison-tbody');
@@ -385,6 +415,154 @@ async function loadModelMetrics() {
     if (prImg) prImg.src = `/reports/evaluation/pr_curves.png${cacheBuster}`;
   } catch (err) {
     console.error('Failed to load model metrics:', err);
+  }
+}
+
+// ==========================================================================
+// Dashboard Visual Charts Engine (Chart.js)
+// ==========================================================================
+function renderDashboardCharts(datasetData, metricsData) {
+  if (typeof Chart === 'undefined') return;
+
+  // Chart 1: Obesity Category Prevalence (Doughnut)
+  const distCanvas = document.getElementById('chart-obesity-distribution');
+  if (distCanvas) {
+    const rawDist = (datasetData && datasetData.target_distribution) || {
+      'Obesity_Type_I': 351,
+      'Obesity_Type_III': 324,
+      'Obesity_Type_II': 297,
+      'Overweight_Level_I': 290,
+      'Overweight_Level_II': 290,
+      'Normal_Weight': 287,
+      'Insufficient_Weight': 272
+    };
+
+    const labels = Object.keys(rawDist).map(k => k.replace(/_/g, ' '));
+    const values = Object.values(rawDist);
+    const colors = ['#E27D60', '#8E2800', '#C34A36', '#48A9A6', '#E3B23C', '#159A9C', '#2878B5'];
+
+    if (obesityDistChart) {
+      obesityDistChart.destroy();
+    }
+
+    obesityDistChart = new Chart(distCanvas, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          backgroundColor: colors,
+          borderWidth: 2,
+          borderColor: '#FFFFFF'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              boxWidth: 12,
+              font: { size: 11, family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' }
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                const total = values.reduce((a, b) => a + b, 0);
+                const pct = ((ctx.parsed / total) * 100).toFixed(1);
+                return ` ${ctx.label}: ${ctx.parsed} (${pct}%)`;
+              }
+            }
+          }
+        },
+        cutout: '62%'
+      }
+    });
+  }
+
+  // Chart 2: Model Benchmark Comparison (Grouped Bar Chart)
+  const compCanvas = document.getElementById('chart-model-comparison');
+  if (compCanvas) {
+    const lr = metricsData && metricsData.logistic_regression ? metricsData.logistic_regression : null;
+    const rf = metricsData && metricsData.random_forest ? metricsData.random_forest : null;
+
+    const rfData = [
+      rf ? (rf.accuracy * 100) : 97.85,
+      rf ? (rf.f1_macro * 100) : 97.79,
+      rf ? (rf.precision_macro * 100) : 97.88,
+      rf ? (rf.recall_macro * 100) : 97.80,
+      rf && typeof rf.roc_auc_macro === 'number' ? (rf.roc_auc_macro * 100) : 99.98
+    ];
+
+    const lrData = [
+      lr ? (lr.accuracy * 100) : 94.98,
+      lr ? (lr.f1_macro * 100) : 94.87,
+      lr ? (lr.precision_macro * 100) : 94.88,
+      lr ? (lr.recall_macro * 100) : 94.94,
+      lr && typeof lr.roc_auc_macro === 'number' ? (lr.roc_auc_macro * 100) : 99.74
+    ];
+
+    if (modelCompChart) {
+      modelCompChart.destroy();
+    }
+
+    modelCompChart = new Chart(compCanvas, {
+      type: 'bar',
+      data: {
+        labels: ['Accuracy', 'Macro F1', 'Precision', 'Recall', 'ROC-AUC'],
+        datasets: [
+          {
+            label: 'Random Forest (Optimal)',
+            data: rfData,
+            backgroundColor: '#159A9C',
+            borderRadius: 4
+          },
+          {
+            label: 'Logistic Regression',
+            data: lrData,
+            backgroundColor: '#2878B5',
+            borderRadius: 4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            min: 90,
+            max: 100,
+            ticks: {
+              callback: function(v) { return v + '%'; },
+              font: { size: 10 }
+            },
+            grid: { color: '#E2E8F0' }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { font: { size: 11, weight: '600' } }
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              boxWidth: 12,
+              font: { size: 11, family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' }
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                return ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}%`;
+              }
+            }
+          }
+        }
+      }
+    });
   }
 }
 
