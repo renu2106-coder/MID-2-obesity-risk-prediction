@@ -1,0 +1,145 @@
+<!-- Page 5: Model Training -->
+<div id="view-training" class="page-view">
+  <!-- Trigger & Status Card -->
+  <div class="card">
+    <div class="card-title">
+      <span>Pipeline Model Training & Hyperparameter Tuning</span>
+      <span class="status-badge model-ready" id="training-badge">Artifacts Available</span>
+    </div>
+    <div class="card-subtitle">Executes 5-fold Stratified Cross-Validation with Scikit-learn Pipeline and GridSearchCV</div>
+
+    <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+      <button class="btn btn-teal" id="start-training-btn">
+        <span id="train-btn-icon">&#9654;</span>
+        <span id="train-btn-text">Execute Model Training Pipeline</span>
+      </button>
+      <div id="training-spinner" style="display: none; align-items: center; gap: 8px;">
+        <span class="spinner" style="border-top-color: var(--accent-teal); border-color: rgba(21, 154, 156, 0.2);"></span>
+        <span style="font-size: 13px; color: var(--text-dark); font-weight: 500;">Training in progress... Running 5-fold CV & GridSearchCV across pipelines...</span>
+      </div>
+      <div id="training-msg" style="font-size: 13px; font-weight: 600;"></div>
+    </div>
+  </div>
+
+  <!-- Cross-Validation & Hyperparameters Grid -->
+  <div class="grid-2">
+    <!-- Logistic Regression Card -->
+    <div class="card">
+      <div class="card-title">
+        <span>1. Multinomial Logistic Regression</span>
+        <span class="status-badge online">Linear Baseline</span>
+      </div>
+      <div class="card-subtitle">Multiclass softmax formulation with L2 regularization</div>
+
+      <table class="data-table" style="margin-bottom: 16px;">
+        <tbody>
+          <tr>
+            <td><strong>Optimization Algorithm:</strong></td>
+            <td><code>L-BFGS</code> (Limited-memory Broyden–Fletcher–Goldfarb–Shanno)</td>
+          </tr>
+          <tr>
+            <td><strong>Search Grid:</strong></td>
+            <td><code>classifier__C: [0.1, 1.0, 10.0]</code></td>
+          </tr>
+          <tr>
+            <td><strong>Best Regularization (C):</strong></td>
+            <td id="lr-best-c"><code>C = 10.0</code></td>
+          </tr>
+          <tr>
+            <td><strong>5-Fold CV Macro F1:</strong></td>
+            <td id="lr-cv-f1" style="font-weight: bold; color: var(--primary-blue);">0.9512</td>
+          </tr>
+          <tr>
+            <td><strong>Validation Metric:</strong></td>
+            <td>Stratified 5-Fold Macro-Averaged F1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Random Forest Card -->
+    <div class="card">
+      <div class="card-title">
+        <span>2. Random Forest Classifier</span>
+        <span class="status-badge model-ready">Ensemble Tree</span>
+      </div>
+      <div class="card-subtitle">Non-linear ensemble learning with bootstrap aggregation</div>
+
+      <table class="data-table" style="margin-bottom: 16px;">
+        <tbody>
+          <tr>
+            <td><strong>Hyperparameter Grid:</strong></td>
+            <td><code>n_estimators: [100, 200], max_depth: [15, 25, None], min_samples_split: [2, 5]</code></td>
+          </tr>
+          <tr>
+            <td><strong>Best Configuration:</strong></td>
+            <td id="rf-best-params"><code>n_estimators: 100, max_depth: 25</code></td>
+          </tr>
+          <tr>
+            <td><strong>5-Fold CV Macro F1:</strong></td>
+            <td id="rf-cv-f1" style="font-weight: bold; color: var(--accent-teal);">0.9804 (98.04%)</td>
+          </tr>
+          <tr>
+            <td><strong>Criterion:</strong></td>
+            <td>Gini Impurity & Stratified Split</td>
+          </tr>
+          <tr>
+            <td><strong>Selected Pipeline:</strong></td>
+            <td style="color: var(--success-color); font-weight: bold;">Optimal Model Selected</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Controlled Target Leakage Experiment Box -->
+  <div class="card">
+    <div class="card-title">
+      <span>Methodological Exploration: Target Leakage (Experiment A vs. Experiment B)</span>
+    </div>
+    <div class="card-subtitle">Evaluating model performance when anthropometric proxies are excluded vs. included</div>
+
+    <div class="alert alert-warning" style="margin-bottom: 16px;">
+      <div>
+        <strong>Academic Insight:</strong> The target classes in this dataset were derived from WHO BMI thresholds (which depend on Height and Weight).
+        When Height, Weight, and BMI are included (<strong>Experiment B</strong>), the model achieves near-deterministic classification (~98%) by learning the BMI formula.
+        When restricted solely to lifestyle and demographic behaviors (<strong>Experiment A</strong>), the model achieves <strong>~84%</strong> accuracy.
+        High accuracy in Experiment B does <em>not</em> prove lifestyle causality.
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Experiment Configuration</th>
+            <th>Features Included</th>
+            <th>Target Leakage?</th>
+            <th>Logistic Regression (F1)</th>
+            <th>Random Forest (F1)</th>
+            <th>Clinical & Academic Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Experiment A: Lifestyle Only</strong></td>
+            <td>Age, Gender, Diet (FAVC, FCVC, NCP, CAEC), Activity (FAF), Screen (TUE), Water (CH2O), Smoke, Alcohol, Transport, Family History</td>
+            <td><span class="status-badge online" style="background:#DEF7EC; color:#03543F;">No Leakage</span></td>
+            <td><code>0.5866</code> (Acc: 62.7%)</td>
+            <td><strong style="color:var(--secondary-blue);">0.8366</strong> (Acc: 84.0%)</td>
+            <td>Evaluates pure behavioral predictability. Shows lifestyle factors carry strong predictive signal on their own.</td>
+          </tr>
+          <tr>
+            <td><strong>Experiment B: Full Features</strong></td>
+            <td>All Experiment A features <strong>+ Height, Weight, and calculated BMI</strong></td>
+            <td><span class="status-badge" style="background:#FEE2E2; color:#991B1B;">Deterministic</span></td>
+            <td><code>0.9230</code> (Acc: 92.6%)</td>
+            <td><strong style="color:var(--accent-teal);">0.9801</strong> (Acc: 98.1%)</td>
+            <td>Learns the mathematical cutoffs of WHO BMI categories. Demonstrates why anthropometrics dominate feature importance.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

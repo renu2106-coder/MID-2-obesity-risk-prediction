@@ -1,0 +1,22 @@
+<!-- Page 4: Exploratory Data Analysis -->
+<div id="view-eda" class="page-view">
+  <div class="alert alert-info">
+    <div>
+      <strong>Biometric Measurement Notice:</strong> Body Mass Index (BMI) is calculated as 
+      <code>Weight (kg) / Height (m)&sup2;</code>. While highly correlated with adiposity, BMI is an indirect proxy that does not distinguish muscle mass from adipose tissue. It serves as an educational reference, not an autonomous clinical diagnostic.
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom: 24px;">
+    <div class="card-title">
+      <span>Exploratory Healthcare Visualizations (10 Analytical Views)</span>
+    </div>
+    <div class="card-subtitle">Examines distributions, lifestyle habits, familial predispositions, and collinearity</div>
+
+    <!-- Gallery of 10 EDA Cards rendered dynamically or structured -->
+    <div id="eda-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 24px;">
+      <!-- Populated dynamically by app.js from /api/eda-data -->
+    </div>
+  </div>
+</div>
+

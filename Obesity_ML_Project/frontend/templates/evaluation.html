@@ -1,0 +1,118 @@
+<!-- Page 6: Model Evaluation -->
+<div id="view-evaluation" class="page-view">
+  <div class="alert alert-teal">
+    <div>
+      <strong>Unbiased Evaluation Protocol:</strong> Both algorithms were evaluated strictly on the 
+      <strong>20% held-out test dataset (418 patient records)</strong>, completely isolated during feature scaling, imputation, and cross-validation folds. Real metrics are reported with zero fabrication.
+    </div>
+  </div>
+
+  <!-- Metric Stat Cards (Selected Random Forest Pipeline) -->
+  <div class="grid-4">
+    <div class="stat-card">
+      <div class="stat-icon">&#10004;</div>
+      <div class="stat-info">
+        <h3 id="eval-test-acc">97.85%</h3>
+        <p>Test Set Accuracy</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">&#9878;</div>
+      <div class="stat-info">
+        <h3 id="eval-macro-f1">0.9779</h3>
+        <p>Macro-Averaged F1</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">&#128065;</div>
+      <div class="stat-info">
+        <h3 id="eval-macro-recall">0.9780</h3>
+        <p>Macro Recall (Sensitivity)</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">&#128200;</div>
+      <div class="stat-info">
+        <h3 id="eval-roc-auc">0.9998</h3>
+        <p>Multiclass ROC-AUC (OvR)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Algorithm Comparison Table -->
+  <div class="card">
+    <div class="card-title">
+      <span>Independent Model Benchmark: Logistic Regression vs. Random Forest</span>
+    </div>
+    <div class="card-subtitle">Comprehensive performance comparison across multiple clinical evaluation metrics</div>
+
+    <div class="table-responsive">
+      <table class="data-table" id="model-comparison-table">
+        <thead>
+          <tr>
+            <th>Evaluation Metric</th>
+            <th>Logistic Regression (Multinomial)</th>
+            <th>Random Forest Classifier</th>
+            <th>Plain Language Healthcare Interpretation</th>
+          </tr>
+        </thead>
+        <tbody id="comparison-tbody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Evaluation Visualizations: Confusion Matrix, ROC curves, PR curves -->
+  <div class="grid-3">
+    <div class="chart-card">
+      <h4 style="font-size: 13px; color: var(--primary-blue); font-weight: bold; margin-bottom: 8px;">1. Multiclass Confusion Matrix</h4>
+      <img id="eval-cm-img" src="/reports/evaluation/confusion_matrix.png" alt="Confusion Matrix">
+      <div class="chart-interpretation">
+        Compares true vs. predicted classes across all 7 categories. Strong diagonal concentration indicates minimal cross-category misclassification.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h4 style="font-size: 13px; color: var(--primary-blue); font-weight: bold; margin-bottom: 8px;">2. One-vs-Rest (OvR) ROC Curves</h4>
+      <img id="eval-roc-img" src="/reports/evaluation/roc_curves.png" alt="ROC Curves">
+      <div class="chart-interpretation">
+        Plots Sensitivity vs. (1 - Specificity) for each of the 7 obesity classes. Curves reaching the top-left corner demonstrate high discrimination.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h4 style="font-size: 13px; color: var(--primary-blue); font-weight: bold; margin-bottom: 8px;">3. Precision-Recall Curves</h4>
+      <img id="eval-pr-img" src="/reports/evaluation/pr_curves.png" alt="Precision-Recall Curves">
+      <div class="chart-interpretation">
+        Evaluates the trade-off between positive predictive value and sensitivity across thresholds, especially valuable under class nuances.
+      </div>
+    </div>
+  </div>
+
+  <!-- Per-Class Performance Table -->
+  <div class="card">
+    <div class="card-title">
+      <span>Per-Category Detailed Performance Breakdown (Random Forest)</span>
+    </div>
+    <div class="card-subtitle">Examines precision, recall, and F1-score across each individual WHO obesity category</div>
+
+    <div class="table-responsive">
+      <table class="data-table" id="per-class-table">
+        <thead>
+          <tr>
+            <th>Obesity Category</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1-Score</th>
+            <th>Test Support (Sample Count)</th>
+          </tr>
+        </thead>
+        <tbody id="per-class-tbody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

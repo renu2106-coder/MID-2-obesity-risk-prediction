@@ -1,0 +1,192 @@
+<!-- Page 7: Obesity Prediction -->
+<div id="view-prediction" class="page-view">
+  <div class="alert alert-info">
+    <div>
+      <strong>Educational Prediction System:</strong> This interactive calculator is an educational healthcare analytics demonstration.
+      Predicted probabilities reflect statistical patterns learned from the UCI dataset, <strong>not</strong> a clinically validated individual diagnosis.
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Interactive Patient Form -->
+    <div class="card">
+      <div class="card-title">
+        <span>Patient Assessment Form</span>
+        <button type="button" class="btn btn-outline" id="load-sample-btn" style="padding: 4px 10px; font-size: 11.5px;">Load Sample Patient</button>
+      </div>
+
+      <form id="prediction-form">
+        <!-- Section 1: Demographics & Biometrics -->
+        <div class="form-section">
+          <div class="form-section-title">1. Demographics & Biometrics</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label for="inp-age">Age (Years)</label>
+              <input type="number" id="inp-age" class="form-control" min="10" max="100" value="25" required>
+            </div>
+            <div class="form-group">
+              <label for="inp-gender">Biological Sex</label>
+              <select id="inp-gender" class="form-control" required>
+                <option value="Female">Female</option>
+                <option value="Male" selected>Male</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inp-height">Height (Centimeters)</label>
+              <input type="number" id="inp-height" class="form-control" min="100" max="250" value="175" step="0.5" required>
+              <div class="field-hint">e.g. 175 cm (converted to 1.75 m)</div>
+            </div>
+            <div class="form-group">
+              <label for="inp-weight">Weight (Kilograms)</label>
+              <input type="number" id="inp-weight" class="form-control" min="30" max="250" value="82" step="0.5" required>
+            </div>
+          </div>
+
+          <!-- Live BMI Indicator -->
+          <div style="background: #F8FAFC; border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+            <div>
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">LIVE CALCULATED BMI:</span>
+              <strong id="live-bmi-display" style="font-size: 15px; color: var(--primary-blue); margin-left: 8px;">26.78 kg/m&sup2;</strong>
+            </div>
+            <span id="live-bmi-badge" class="status-badge model-ready">Overweight (WHO)</span>
+          </div>
+        </div>
+
+        <!-- Section 2: Family History -->
+        <div class="form-section">
+          <div class="form-section-title">2. Family History</div>
+          <div class="form-group">
+            <label for="inp-family-history">Family Member Diagnosed with Overweight or Obesity?</label>
+            <select id="inp-family-history" class="form-control" required>
+              <option value="yes" selected>Yes - Positive Familial History</option>
+              <option value="no">No - No Familial History</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Section 3: Dietary Habits -->
+        <div class="form-section">
+          <div class="form-section-title">3. Dietary Habits</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label for="inp-favc">High-Calorie Food Intake (FAVC)</label>
+              <select id="inp-favc" class="form-control" required>
+                <option value="yes" selected>Yes - Frequently</option>
+                <option value="no">No - Rarely/Never</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inp-fcvc">Vegetable Intake Frequency (FCVC)</label>
+              <select id="inp-fcvc" class="form-control" required>
+                <option value="1.0">1 - Rarely / Never</option>
+                <option value="2.0" selected>2 - Sometimes</option>
+                <option value="3.0">3 - Always / High</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inp-ncp">Main Daily Meals (NCP)</label>
+              <select id="inp-ncp" class="form-control" required>
+                <option value="1.0">1 Meal</option>
+                <option value="2.0">2 Meals</option>
+                <option value="3.0" selected>3 Main Meals</option>
+                <option value="4.0">4 or More Meals</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inp-caec">Snacking Between Meals (CAEC)</label>
+              <select id="inp-caec" class="form-control" required>
+                <option value="no">No Snacks</option>
+                <option value="Sometimes" selected>Sometimes</option>
+                <option value="Frequently">Frequently</option>
+                <option value="Always">Always</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Lifestyle & Physical Activity -->
+        <div class="form-section">
+          <div class="form-section-title">4. Lifestyle & Activity Patterns</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label for="inp-smoke">Tobacco Smoking Status</label>
+              <select id="inp-smoke" class="form-control" required>
+                <option value="no" selected>No - Non-smoker</option>
+                <option value="yes">Yes - Smoker</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inp-ch2o">Daily Water Intake (CH2O)</label>
+              <select id="inp-ch2o" class="form-control" required>
+                <option value="1.0">1 - Less than 1 Litre</option>
+                <option value="2.0" selected>2 - 1 to 2 Litres</option>
+                <option value="3.0">3 - More than 2 Litres</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inp-scc">Calorie Tracking Behavior (SCC)</label>
+              <select id="inp-scc" class="form-control" required>
+                <option value="no" selected>No - Do not monitor</option>
+                <option value="yes">Yes - Actively monitor</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inp-faf">Physical Activity (FAF)</label>
+              <select id="inp-faf" class="form-control" required>
+                <option value="0.0">0 - None / Sedentary</option>
+                <option value="1.0" selected>1 - 1 to 2 days/week</option>
+                <option value="2.0">2 - 2 to 4 days/week</option>
+                <option value="3.0">3 - 4 to 5+ days/week</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inp-tue">Daily Screen Time (TUE)</label>
+              <select id="inp-tue" class="form-control" required>
+                <option value="0.0">0 - 0 to 2 hours</option>
+                <option value="1.0" selected>1 - 3 to 5 hours</option>
+                <option value="2.0">2 - More than 5 hours</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inp-calc">Alcohol Consumption (CALC)</label>
+              <select id="inp-calc" class="form-control" required>
+                <option value="no">No - Non-drinker</option>
+                <option value="Sometimes" selected>Sometimes</option>
+                <option value="Frequently">Frequently</option>
+                <option value="Always">Always</option>
+              </select>
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label for="inp-mtrans">Primary Mode of Transportation</label>
+              <select id="inp-mtrans" class="form-control" required>
+                <option value="Public_Transportation" selected>Public Transportation</option>
+                <option value="Walking">Walking</option>
+                <option value="Automobile">Automobile</option>
+                <option value="Motorbike">Motorbike</option>
+                <option value="Bike">Bicycle</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-teal" id="predict-submit-btn" style="width: 100%; padding: 14px; font-size: 15px;">
+          <span>Generate Obesity Level Prediction</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Prediction Results Display Column -->
+    <div>
+      <!-- Main Output Result Card -->
+      <div id="prediction-result-container">
+        <!-- Placeholder before first prediction -->
+        <div class="card" style="text-align: center; padding: 48px 24px; color: var(--text-muted);">
+          <div style="font-size: 40px; margin-bottom: 12px;">&#9776;</div>
+          <h3 style="font-size: 17px; color: var(--primary-blue); margin-bottom: 6px;">Patient Evaluation Panel</h3>
+          <p style="font-size: 13px;">Complete the patient assessment form on the left and click <strong>"Generate Obesity Level Prediction"</strong> to execute real-time model inference.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

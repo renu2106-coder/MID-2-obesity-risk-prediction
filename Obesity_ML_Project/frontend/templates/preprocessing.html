@@ -1,0 +1,140 @@
+<!-- Page 3: Data Preprocessing -->
+<div id="view-preprocessing" class="page-view">
+  <div class="alert alert-info">
+    <div>
+      <strong>Data Leakage Prevention:</strong> To ensure sound epidemiological and statistical validity, all transformations (OneHotEncoder categories, StandardScaler means and standard deviations, SimpleImputer statistics) are strictly fitted on the <strong>Training Set only</strong> and applied forward to the Test Set.
+    </div>
+  </div>
+
+  <!-- Before & After Comparison -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <span>Raw Dataset (Before Preprocessing)</span>
+        <span class="status-badge" style="background: #FEE2E2; color: #991B1B;">Unprocessed</span>
+      </div>
+      <table class="data-table">
+        <tbody>
+          <tr>
+            <td><strong>Total Raw Instances:</strong></td>
+            <td id="prep-before-records">2,111</td>
+          </tr>
+          <tr>
+            <td><strong>Raw Features:</strong></td>
+            <td>16 input attributes + 1 target</td>
+          </tr>
+          <tr>
+            <td><strong>Missing Cells:</strong></td>
+            <td id="prep-before-missing">0 (Completely populated)</td>
+          </tr>
+          <tr>
+            <td><strong>Duplicate Records:</strong></td>
+            <td id="prep-before-duplicates" style="color: var(--danger-color); font-weight: bold;">24 duplicates detected</td>
+          </tr>
+          <tr>
+            <td><strong>Categorical Format:</strong></td>
+            <td>Text labels ('yes', 'no', 'Sometimes', etc.)</td>
+          </tr>
+          <tr>
+            <td><strong>Numerical Ranges:</strong></td>
+            <td>Unscaled (Age: 14-61, Weight: 39-173 kg)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>Transformed Pipeline (After Preprocessing)</span>
+        <span class="status-badge model-ready">Ready for Modeling</span>
+      </div>
+      <table class="data-table">
+        <tbody>
+          <tr>
+            <td><strong>Cleaned Records Retained:</strong></td>
+            <td id="prep-after-records">2,087 records (24 duplicates removed)</td>
+          </tr>
+          <tr>
+            <td><strong>Train / Test Partition:</strong></td>
+            <td id="prep-after-split">1,669 Train (80%) / 418 Test (20%)</td>
+          </tr>
+          <tr>
+            <td><strong>Partitioning Strategy:</strong></td>
+            <td>Stratified 5-class/7-class balanced split</td>
+          </tr>
+          <tr>
+            <td><strong>Numerical Transformation:</strong></td>
+            <td><code>StandardScaler</code> (&mu; = 0, &sigma; = 1)</td>
+          </tr>
+          <tr>
+            <td><strong>Categorical Encoding:</strong></td>
+            <td><code>OneHotEncoder</code> (32 total pipeline dimensions)</td>
+          </tr>
+          <tr>
+            <td><strong>Missing Value Strategy:</strong></td>
+            <td><code>SimpleImputer</code> (Median for num, Most frequent for cat)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Numerical Physiological Range Validation -->
+  <div class="card">
+    <div class="card-title">
+      <span>Numerical Range & Physiological Plausibility Audit</span>
+    </div>
+    <div class="card-subtitle">Ensures continuous measurements fall within clinically accepted human boundaries</div>
+
+    <div class="table-responsive">
+      <table class="data-table" id="range-validation-table">
+        <thead>
+          <tr>
+            <th>Numerical Feature</th>
+            <th>Plausible Expected Range</th>
+            <th>Dataset Min</th>
+            <th>Dataset Max</th>
+            <th>Out-of-Bounds Count</th>
+            <th>Validation Status</th>
+          </tr>
+        </thead>
+        <tbody id="range-validation-tbody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Preprocessor Pipeline Details -->
+  <div class="card">
+    <div class="card-title">
+      <span>Scikit-learn ColumnTransformer Architecture</span>
+    </div>
+    <div class="card-subtitle">Encapsulated inside a leak-proof Pipeline object</div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+      <div style="background: #F8FAFC; border: 1px solid var(--border-color); padding: 16px; border-radius: 8px;">
+        <h4 style="font-size: 14px; color: var(--primary-blue); margin-bottom: 8px;">Numerical Pipeline (9 Features)</h4>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+          Applied to: <code>Age, Height, Weight, BMI, FCVC, NCP, CH2O, FAF, TUE</code>
+        </p>
+        <ul style="font-size: 12px; padding-left: 18px; color: var(--text-dark);">
+          <li>Step 1: <code>SimpleImputer(strategy='median')</code></li>
+          <li>Step 2: <code>StandardScaler(with_mean=True, with_std=True)</code></li>
+        </ul>
+      </div>
+
+      <div style="background: #F8FAFC; border: 1px solid var(--border-color); padding: 16px; border-radius: 8px;">
+        <h4 style="font-size: 14px; color: var(--primary-blue); margin-bottom: 8px;">Categorical Pipeline (8 Features &rarr; 23 Encoded Columns)</h4>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+          Applied to: <code>Gender, family_history, FAVC, CAEC, SMOKE, SCC, CALC, MTRANS</code>
+        </p>
+        <ul style="font-size: 12px; padding-left: 18px; color: var(--text-dark);">
+          <li>Step 1: <code>SimpleImputer(strategy='most_frequent')</code></li>
+          <li>Step 2: <code>OneHotEncoder(handle_unknown='ignore', sparse_output=False)</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+

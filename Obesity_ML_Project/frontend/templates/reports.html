@@ -1,0 +1,78 @@
+<!-- Page 8: Reports -->
+<div id="view-reports" class="page-view">
+  <div class="alert alert-info">
+    <div>
+      <strong>Healthcare Analytics Demonstration Reports:</strong> 
+      Export artifacts including full model benchmarks, dataset data quality audits, and patient prediction summaries.
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <!-- Report 1: Model Evaluation Report -->
+    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div class="stat-icon" style="margin-bottom: 14px;">&#128202;</div>
+        <h3 style="font-size: 16px; color: var(--primary-blue); font-weight: 700; margin-bottom: 6px;">Model Evaluation Benchmark</h3>
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+          Includes complete accuracy, macro-F1, precision, recall, multiclass ROC-AUC scores, confusion matrix arrays, and Experiment A vs B target leakage analysis.
+        </p>
+      </div>
+      <a href="/api/reports/download/evaluation" target="_blank" class="btn btn-primary" style="text-decoration: none;">
+        <span>Export Evaluation JSON</span>
+      </a>
+    </div>
+
+    <!-- Report 2: Dataset Quality Report -->
+    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div class="stat-icon" style="margin-bottom: 14px;">&#128221;</div>
+        <h3 style="font-size: 16px; color: var(--primary-blue); font-weight: 700; margin-bottom: 6px;">Data Quality & Preprocessing Audit</h3>
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+          Documents missing value audit, detection of 24 duplicate rows, ColumnTransformer pipelines, StandardScaler statistics, and stratified 80:20 split verification.
+        </p>
+      </div>
+      <a href="/api/reports/download/quality" target="_blank" class="btn btn-teal" style="text-decoration: none;">
+        <span>Export Preprocessing Audit</span>
+      </a>
+    </div>
+
+    <!-- Report 3: Dataset Summary Report -->
+    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div class="stat-icon" style="margin-bottom: 14px;">&#128196;</div>
+        <h3 style="font-size: 16px; color: var(--primary-blue); font-weight: 700; margin-bottom: 6px;">Dataset Summary Report</h3>
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+          Details the 2,111 raw patient records, 76.4% synthetic SMOTE sampling breakdown, feature ranges, and target class balance across the cohort.
+        </p>
+      </div>
+      <a href="/api/reports/download/dataset" target="_blank" class="btn btn-outline" style="text-decoration: none;">
+        <span>Export Dataset Summary</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Academic Summary Summary Box -->
+  <div class="card">
+    <div class="card-title">
+      <span>Executive Summary & System Overview</span>
+    </div>
+    <div class="card-subtitle">Healthcare Machine Learning Practical Demonstration</div>
+
+    <div style="font-size: 13.5px; line-height: 1.7; color: var(--text-dark);">
+      <p style="margin-bottom: 12px;">
+        <strong>1. Problem Context:</strong> Obesity is a complex multifactorial condition associated with cardiometabolic risk. 
+        This project evaluates the capacity of Machine Learning models to classify an individual's obesity tier using behavioral lifestyle indicators, demographic attributes, and anthropometric measures.
+      </p>
+      <p style="margin-bottom: 12px;">
+        <strong>2. Methodological Rigor:</strong> Data leakage was strictly prevented by structuring all transformations inside Scikit-learn Pipelines fitted solely on training folds within stratified 5-fold cross-validation.
+      </p>
+      <p style="margin-bottom: 12px;">
+        <strong>3. Target Leakage Insights:</strong> By designing two controlled experiments (Experiment A excluding anthropometrics vs. Experiment B including height and weight), the system demonstrates that while Random Forest achieves <strong>83.97% accuracy</strong> purely on diet, activity, and family history, the rise to <strong>97.85%</strong> in Experiment B is primarily a mechanistic consequence of the mathematical definition of WHO BMI thresholds.
+      </p>
+      <p>
+        <strong>4. Educational Governance:</strong> Predictions are transparently accompanied by all seven class probabilities, local feature importance drivers, and unequivocal statements clarifying that statistical model outputs are educational estimates and do not constitute clinical diagnoses.
+      </p>
+    </div>
+  </div>
+</div>
+

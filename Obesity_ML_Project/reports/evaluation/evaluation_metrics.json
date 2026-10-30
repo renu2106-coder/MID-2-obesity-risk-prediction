@@ -1,0 +1,250 @@
+{
+    "selected_model": "Random Forest Classifier",
+    "selection_reason": "Random Forest Classifier was selected as the optimal production pipeline due to its superior Macro F1-score (0.9779) and high multi-class discrimination (ROC-AUC: 0.9998) on held-out test data.",
+    "comparison_table": [
+        {
+            "metric": "Accuracy",
+            "logistic_regression": "94.98%",
+            "random_forest": "97.85%",
+            "interpretation": "Overall rate of correct classification across all 7 classes."
+        },
+        {
+            "metric": "Macro F1-Score",
+            "logistic_regression": "0.9487",
+            "random_forest": "0.9779",
+            "interpretation": "Unweighted mean F1; penalizes models that fail on minority classes."
+        },
+        {
+            "metric": "Weighted F1-Score",
+            "logistic_regression": "0.9495",
+            "random_forest": "0.9786",
+            "interpretation": "Prevalence-weighted harmonic mean of precision and recall."
+        },
+        {
+            "metric": "Macro Precision",
+            "logistic_regression": "0.9488",
+            "random_forest": "0.9788",
+            "interpretation": "Average positive predictive value across classes."
+        },
+        {
+            "metric": "Macro Recall",
+            "logistic_regression": "0.9494",
+            "random_forest": "0.9780",
+            "interpretation": "Average sensitivity across classes."
+        },
+        {
+            "metric": "Multiclass ROC-AUC (OvR)",
+            "logistic_regression": "0.9974",
+            "random_forest": "0.9998",
+            "interpretation": "One-vs-Rest discrimination ability across all thresholds."
+        }
+    ],
+    "logistic_regression": {
+        "accuracy": 0.9498,
+        "f1_macro": 0.9487,
+        "f1_weighted": 0.9495,
+        "precision_macro": 0.9488,
+        "recall_macro": 0.9494,
+        "roc_auc_macro": 0.9974,
+        "per_class": {
+            "Insufficient_Weight": {
+                "precision": 0.9636363636363636,
+                "recall": 1.0,
+                "f1-score": 0.9814814814814815,
+                "support": 53.0
+            },
+            "Normal_Weight": {
+                "precision": 0.9636363636363636,
+                "recall": 0.9298245614035088,
+                "f1-score": 0.9464285714285714,
+                "support": 57.0
+            },
+            "Obesity_Type_I": {
+                "precision": 0.9565217391304348,
+                "recall": 0.9428571428571428,
+                "f1-score": 0.9496402877697842,
+                "support": 70.0
+            },
+            "Obesity_Type_II": {
+                "precision": 0.9375,
+                "recall": 1.0,
+                "f1-score": 0.967741935483871,
+                "support": 60.0
+            },
+            "Obesity_Type_III": {
+                "precision": 1.0,
+                "recall": 0.9846153846153847,
+                "f1-score": 0.9922480620155039,
+                "support": 65.0
+            },
+            "Overweight_Level_I": {
+                "precision": 0.8928571428571429,
+                "recall": 0.9090909090909091,
+                "f1-score": 0.9009009009009009,
+                "support": 55.0
+            },
+            "Overweight_Level_II": {
+                "precision": 0.9272727272727272,
+                "recall": 0.8793103448275862,
+                "f1-score": 0.9026548672566371,
+                "support": 58.0
+            },
+            "accuracy": 0.9497607655502392,
+            "macro avg": {
+                "precision": 0.9487749052190048,
+                "recall": 0.9493854775420759,
+                "f1-score": 0.9487280151909642,
+                "support": 418.0
+            },
+            "weighted avg": {
+                "precision": 0.9499891932490225,
+                "recall": 0.9497607655502392,
+                "f1-score": 0.9495309551299198,
+                "support": 418.0
+            }
+        }
+    },
+    "random_forest": {
+        "accuracy": 0.9785,
+        "f1_macro": 0.9779,
+        "f1_weighted": 0.9786,
+        "precision_macro": 0.9788,
+        "recall_macro": 0.978,
+        "roc_auc_macro": 0.9998,
+        "per_class": {
+            "Insufficient_Weight": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 53.0
+            },
+            "Normal_Weight": {
+                "precision": 0.9047619047619048,
+                "recall": 1.0,
+                "f1-score": 0.95,
+                "support": 57.0
+            },
+            "Obesity_Type_I": {
+                "precision": 1.0,
+                "recall": 0.9857142857142858,
+                "f1-score": 0.9928057553956835,
+                "support": 70.0
+            },
+            "Obesity_Type_II": {
+                "precision": 0.9836065573770492,
+                "recall": 1.0,
+                "f1-score": 0.9917355371900827,
+                "support": 60.0
+            },
+            "Obesity_Type_III": {
+                "precision": 1.0,
+                "recall": 0.9846153846153847,
+                "f1-score": 0.9922480620155039,
+                "support": 65.0
+            },
+            "Overweight_Level_I": {
+                "precision": 0.9807692307692307,
+                "recall": 0.9272727272727272,
+                "f1-score": 0.9532710280373832,
+                "support": 55.0
+            },
+            "Overweight_Level_II": {
+                "precision": 0.9821428571428571,
+                "recall": 0.9482758620689655,
+                "f1-score": 0.9649122807017544,
+                "support": 58.0
+            },
+            "accuracy": 0.9784688995215312,
+            "macro avg": {
+                "precision": 0.9787543642930059,
+                "recall": 0.9779826085244805,
+                "f1-score": 0.9778532376200583,
+                "support": 418.0
+            },
+            "weighted avg": {
+                "precision": 0.9796517115326434,
+                "recall": 0.9784688995215312,
+                "f1-score": 0.9785681290977712,
+                "support": 418.0
+            }
+        }
+    },
+    "experiments_comparison": {
+        "Experiment_A": {
+            "name": "Experiment A: Lifestyle & Demographic Model",
+            "description": "Excludes Height, Weight, and calculated BMI. Evaluates the independent predictive power of eating habits, physical activity, hydration, screen time, alcohol consumption, transportation modes, and family history without direct anthropometric cues.",
+            "features_used": [
+                "Age",
+                "FCVC",
+                "NCP",
+                "CH2O",
+                "FAF",
+                "TUE",
+                "Gender",
+                "family_history_with_overweight",
+                "FAVC",
+                "CAEC",
+                "SMOKE",
+                "SCC",
+                "CALC",
+                "MTRANS"
+            ],
+            "has_target_leakage": false,
+            "logistic_regression": {
+                "accuracy": 0.6268,
+                "macro_f1": 0.5866
+            },
+            "random_forest": {
+                "accuracy": 0.8397,
+                "macro_f1": 0.8366
+            }
+        },
+        "Experiment_B": {
+            "name": "Experiment B: Full-Feature Model (Anthropometrics + Lifestyle)",
+            "description": "Includes Height, Weight, and calculated BMI alongside all behavioral attributes. Demonstrates the mathematical effect of anthropometric features on WHO obesity categories.",
+            "features_used": [
+                "Age",
+                "Height",
+                "Weight",
+                "BMI",
+                "FCVC",
+                "NCP",
+                "CH2O",
+                "FAF",
+                "TUE",
+                "Gender",
+                "family_history_with_overweight",
+                "FAVC",
+                "CAEC",
+                "SMOKE",
+                "SCC",
+                "CALC",
+                "MTRANS"
+            ],
+            "has_target_leakage": true,
+            "logistic_regression": {
+                "accuracy": 0.9258,
+                "macro_f1": 0.923
+            },
+            "random_forest": {
+                "accuracy": 0.9809,
+                "macro_f1": 0.9801
+            }
+        }
+    },
+    "metric_explanations": {
+        "accuracy": "Accuracy measures the overall fraction of correct predictions across all obesity categories. Formula: Correct Predictions / Total Predictions. While intuitive, it can be deceptive if classes are imbalanced.",
+        "precision_macro": "Macro Precision measures the average purity of positive predictions across each class independently, giving equal weight to rare and frequent categories. Answering: 'When the model predicts a specific obesity tier, how often is it truly correct?'",
+        "precision_weighted": "Weighted Precision calculates the average class precision, weighted by the prevalence of each class in the test set.",
+        "recall_macro": "Macro Recall measures the model's ability to detect all individuals belonging to each specific obesity class. Answering: 'Out of all individuals who truly belong to an obesity category, what percentage did the model find?'",
+        "recall_weighted": "Weighted Recall computes the sensitivity averaged according to each class's sample support.",
+        "f1_macro": "Macro F1-Score is the harmonic mean of precision and recall computed equally across all 7 categories. It serves as the gold-standard validation criterion in multiclass healthcare evaluation because it penalizes poor performance on any single clinical tier.",
+        "f1_weighted": "Weighted F1-Score is the prevalence-weighted harmonic mean of precision and recall.",
+        "roc_auc_ovr_macro": "Multiclass ROC-AUC (One-vs-Rest) evaluates how effectively the model discriminates each obesity category from the other six classes across all possible probability thresholds. 1.0 represents perfect discrimination."
+    },
+    "image_paths": {
+        "confusion_matrix": "C:\\Users\\HI\\OneDrive\\Desktop\\Obesity risk\\Obesity_ML_Project\\reports\\evaluation\\confusion_matrix.png",
+        "roc_curves": "C:\\Users\\HI\\OneDrive\\Desktop\\Obesity risk\\Obesity_ML_Project\\reports\\evaluation\\roc_curves.png",
+        "pr_curves": "C:\\Users\\HI\\OneDrive\\Desktop\\Obesity risk\\Obesity_ML_Project\\reports\\evaluation\\pr_curves.png"
+    }
+}

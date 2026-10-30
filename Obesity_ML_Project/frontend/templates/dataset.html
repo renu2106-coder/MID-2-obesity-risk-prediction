@@ -1,0 +1,112 @@
+<!-- Page 2: Dataset Explorer -->
+<div id="view-dataset" class="page-view">
+  <!-- Upload Card -->
+  <div class="card">
+    <div class="card-title">
+      <span>Upload or Replace Dataset CSV</span>
+    </div>
+    <div class="card-subtitle">Accepts the official UCI <code>ObesityDataSet_raw_and_data_sinthetic.csv</code> (16 features + NObeyesdad)</div>
+
+    <form id="upload-form" style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+      <input type="file" id="csv-file-input" accept=".csv" class="form-control" style="max-width: 380px;">
+      <button type="submit" class="btn btn-teal" id="upload-btn">
+        <span>Upload & Validate CSV</span>
+      </button>
+      <span id="upload-feedback" style="font-size: 13px; font-weight: 500;"></span>
+    </form>
+  </div>
+
+  <!-- Dimensions & Stats Grid -->
+  <div class="grid-4">
+    <div class="stat-card">
+      <div class="stat-icon">&#128196;</div>
+      <div class="stat-info">
+        <h3 id="explorer-records">2,111</h3>
+        <p>Total Records</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">&#128450;</div>
+      <div class="stat-info">
+        <h3 id="explorer-columns">17</h3>
+        <p>Total Columns (16 + 1 Target)</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">&#10060;</div>
+      <div class="stat-info">
+        <h3 id="explorer-missing">0</h3>
+        <p>Missing Values</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">&#9851;</div>
+      <div class="stat-info">
+        <h3 id="explorer-duplicates">24</h3>
+        <p>Duplicate Records</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dataset Preview Table -->
+  <div class="card">
+    <div class="card-title">
+      <span>Dataset Preview (Top 10 Records)</span>
+      <span class="status-badge online">Raw Dataset Sample</span>
+    </div>
+    <div class="table-responsive">
+      <table class="data-table" id="dataset-preview-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Height (m)</th>
+            <th>Weight (kg)</th>
+            <th>Family History</th>
+            <th>FAVC</th>
+            <th>FCVC</th>
+            <th>NCP</th>
+            <th>CAEC</th>
+            <th>SMOKE</th>
+            <th>CH2O</th>
+            <th>SCC</th>
+            <th>FAF</th>
+            <th>TUE</th>
+            <th>CALC</th>
+            <th>MTRANS</th>
+            <th>NObeyesdad (Target)</th>
+          </tr>
+        </thead>
+        <tbody id="preview-tbody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Column Metadata Table -->
+  <div class="card">
+    <div class="card-title">
+      <span>Attribute Dictionary & Clinical Descriptions</span>
+    </div>
+    <div class="table-responsive">
+      <table class="data-table" id="dataset-columns-table">
+        <thead>
+          <tr>
+            <th>Column Name</th>
+            <th>Type</th>
+            <th>Data Type</th>
+            <th>Missing Values</th>
+            <th>Range / Categories</th>
+            <th>Healthcare & Survey Description</th>
+          </tr>
+        </thead>
+        <tbody id="columns-tbody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
